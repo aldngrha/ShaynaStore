@@ -24,9 +24,12 @@
             <div class="row">
               <div class="col-lg-6">
                 <div class="product-pic-zoom">
-                  <img class="product-big-img" :src="photo" alt="" />
+                  <img class="product-big-img" :src="gambar" alt="" />
                 </div>
-                <div class="product-thumbs">
+                <div
+                  class="product-thumbs"
+                  v-if="productDetails.galleries.length > 0"
+                >
                   <carousel
                     class="product-thumbs-track ps-slider"
                     :nav="false"
@@ -34,35 +37,13 @@
                     :autoplay="true"
                   >
                     <div
+                      v-for="ss in productDetails.galleries"
+                      :key="ss.id"
                       class="pt"
-                      @click="changeImage(thumbs[0])"
-                      :class="thumbs[0] == photo ? 'active' : ''"
+                      @click="changeImage(ss.photo)"
+                      :class="ss.photo == gambar ? 'active' : ''"
                     >
-                      <img src="img/mickey1.jpg" alt="" />
-                    </div>
-
-                    <div
-                      class="pt"
-                      @click="changeImage(thumbs[1])"
-                      :class="thumbs[1] == photo ? 'active' : ''"
-                    >
-                      <img src="img/mickey2.jpg" alt="" />
-                    </div>
-
-                    <div
-                      class="pt"
-                      @click="changeImage(thumbs[2])"
-                      :class="thumbs[2] == photo ? 'active' : ''"
-                    >
-                      <img src="img/mickey3.jpg" alt="" />
-                    </div>
-
-                    <div
-                      class="pt"
-                      @click="changeImage(thumbs[3])"
-                      :class="thumbs[3] == photo ? 'active' : ''"
-                    >
-                      <img src="img/mickey4.jpg" alt="" />
+                      <img :src="ss.photo" alt="" />
                     </div>
                   </carousel>
                 </div>
@@ -70,37 +51,28 @@
               <div class="col-lg-6">
                 <div class="product-details">
                   <div class="pd-title">
-                    <span>oranges</span>
-                    <h3>Pure Pineapple</h3>
+                    <span>{{ productDetails.type }}</span>
+                    <h3>{{ productDetails.name }}</h3>
                   </div>
                   <div class="pd-desc">
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Corporis, error officia. Rem aperiam laborum voluptatum
-                      vel, pariatur modi hic provident eum iure natus quos non a
-                      sequi, id accusantium! Autem.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Quam possimus quisquam animi, commodi, nihil voluptate
-                      nostrum neque architecto illo officiis doloremque et
-                      corrupti cupiditate voluptatibus error illum. Commodi
-                      expedita animi nulla aspernatur. Id asperiores blanditiis,
-                      omnis repudiandae iste inventore cum, quam sint molestiae
-                      accusamus voluptates ex tempora illum sit perspiciatis.
-                      Nostrum dolor tenetur amet, illo natus magni veniam quia
-                      sit nihil dolores. Commodi ratione distinctio harum
-                      voluptatum velit facilis voluptas animi non laudantium, id
-                      dolorem atque perferendis enim ducimus? A exercitationem
-                      recusandae aliquam quod. Itaque inventore obcaecati, unde
-                      quam impedit praesentium veritatis quis beatae ea atque
-                      perferendis voluptates velit architecto?
-                    </p>
-                    <h4>$495.00</h4>
+                    <p v-html="productDetails.description"></p>
+                    <h4>${{ productDetails.price }}</h4>
                   </div>
                   <div class="quantity">
-                    <router-link to="/cart" class="primary-btn pd-cart"
-                      >Add To Cart
+                    <router-link to="/cart">
+                      <a
+                        @click="
+                          saveCart(
+                            productDetails.id,
+                            productDetails.name,
+                            productDetails.price,
+                            productDetails.galleries[0].photo
+                          )
+                        "
+                        href="#"
+                        class="primary-btn pd-cart"
+                        >Add To Cart</a
+                      >
                     </router-link>
                   </div>
                 </div>
@@ -121,6 +93,7 @@ import HeaderShayna from "../components/HeaderShayna.vue";
 import RelatedProducts from "../components/RealtedProducts.vue";
 import Footer from "../components/Footer.vue";
 import carousel from "vue-owl-carousel";
+import axios from "axios";
 export default {
   name: "Product",
   components: {
@@ -131,19 +104,52 @@ export default {
   },
   data() {
     return {
-      photo: "img/mickey1.jpg",
-      thumbs: [
-        "img/mickey1.jpg",
-        "img/mickey2.jpg",
-        "img/mickey3.jpg",
-        "img/mickey4.jpg",
-      ],
+      gambar: "",
+      productDetails: [],
+      cartUser: [],
     };
   },
   methods: {
     changeImage(urlImage) {
-      this.photo = urlImage;
+      this.gambar = urlImage;
+      console.log(this.idProduct);
     },
+    setDataPicture(data) {
+      // replace object productDetails dengan data dari API
+      this.productDetails = data;
+      // replace value productDetails dengan data dari API {galleries}
+      this.gambar = data.galleries[0].photo;
+    },
+    saveCart(idProduct, nameProduct, priceProduct, photoProduct) {
+      let productStored = {
+        id: idProduct,
+        name: nameProduct,
+        price: priceProduct,
+        photo: photoProduct,
+      };
+      this.cartUser.push(productStored);
+      const parsed = JSON.stringify(this.cartUser);
+      localStorage.setItem("cartUser", parsed);
+    },
+  },
+  mounted() {
+    //jika localStorage tersedia
+    if (localStorage.getItem("cartUser")) {
+      //ambil data pada array cartUser, lalu ubah(parse) ke dalam JSON
+      try {
+        this.cartUser = JSON.parse(localStorage.getItem("cartUser"));
+      } catch (e) {
+        localStorage.removeItem("cartUser");
+      }
+    }
+    axios
+      .get("https://shayna.test/api/products", {
+        params: {
+          id: this.$route.params.id,
+        },
+      })
+      .then((res) => this.setDataPicture(res.data.data))
+      .catch((err) => console.log(err));
   },
 };
 </script>

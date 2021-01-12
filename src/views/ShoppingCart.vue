@@ -34,31 +34,15 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                      <tr v-for="cart in cartUser" :key="cart.id">
                         <td class="cart-pic first-row">
-                          <img src="img/cart-page/product-1.jpg" />
+                          <img class="img-cart" :src="cart.photo" />
                         </td>
                         <td class="cart-title first-row text-center">
-                          <h5>Pure Pineapple</h5>
+                          <h5>{{ cart.name }}</h5>
                         </td>
-                        <td class="p-price first-row">$60.00</td>
-                        <td class="delete-item">
-                          <a href="#"
-                            ><i class="material-icons">
-                              close
-                            </i></a
-                          >
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="cart-pic first-row">
-                          <img src="img/cart-page/product-1.jpg" />
-                        </td>
-                        <td class="cart-title first-row text-center">
-                          <h5>Pure Pineapple</h5>
-                        </td>
-                        <td class="p-price first-row">$60.00</td>
-                        <td class="delete-item">
+                        <td class="p-price first-row">${{ cart.price }}</td>
+                        <td @click="removeItem(cart.index)" class="delete-item">
                           <a href="#"
                             ><i class="material-icons">
                               close
@@ -84,6 +68,7 @@
                         id="namaLengkap"
                         aria-describedby="namaHelp"
                         placeholder="Masukan Nama"
+                        v-model="customerInfo.name"
                       />
                     </div>
                     <div class="form-group">
@@ -94,6 +79,7 @@
                         id="emailAddress"
                         aria-describedby="emailHelp"
                         placeholder="Masukan Email"
+                        v-model="customerInfo.email"
                       />
                     </div>
                     <div class="form-group">
@@ -104,6 +90,7 @@
                         id="noHP"
                         aria-describedby="noHPHelp"
                         placeholder="Masukan No. HP"
+                        v-model="customerInfo.number"
                       />
                     </div>
                     <div class="form-group">
@@ -112,6 +99,7 @@
                         class="form-control"
                         id="alamatLengkap"
                         rows="3"
+                        v-model="customerInfo.address"
                       ></textarea>
                     </div>
                   </form>
@@ -127,10 +115,14 @@
                     <li class="subtotal">
                       ID Transaction <span>#SH12000</span>
                     </li>
-                    <li class="subtotal mt-3">Subtotal <span>$240.00</span></li>
-                    <li class="subtotal mt-3">Pajak <span>10%</span></li>
                     <li class="subtotal mt-3">
-                      Total Biaya <span>$440.00</span>
+                      Subtotal <span>${{ priceTotal }}.00</span>
+                    </li>
+                    <li class="subtotal mt-3">
+                      Pajak <span>10% (${{ pajak }}.00)</span>
+                    </li>
+                    <li class="subtotal mt-3">
+                      Total Biaya <span>${{ totalPayment }}.00</span>
                     </li>
                     <li class="subtotal mt-3">
                       Bank Transfer <span>Mandiri</span>
@@ -142,8 +134,8 @@
                       Nama Penerima <span>Shayna</span>
                     </li>
                   </ul>
-                  <router-link to="/success" class="proceed-btn"
-                    >I ALREADY PAID</router-link
+                  <a @click="checkout()" href="#" class="proceed-btn"
+                    >I ALREADY PAID</a
                   >
                 </div>
               </div>
@@ -158,10 +150,81 @@
 
 <script>
 import HeaderShayna from "../components/HeaderShayna.vue";
+import axios from "axios";
 export default {
   name: "Cart",
   components: {
     HeaderShayna,
   },
+  data() {
+    return {
+      cartUser: [],
+      customerInfo: {
+        name: "",
+        email: "",
+        number: "",
+        adress: "",
+      },
+    };
+  },
+  methods: {
+    //function hapus cart, dan refresh cartnya
+    removeItem(index) {
+      this.cartUser.splice(index, 1);
+      const parsed = JSON.stringify(this.cartUser);
+      localStorage.setItem("cartUser", parsed);
+    },
+    //function mengirim data ke API
+    checkout() {
+      let productId = this.cartUser.map(function(product) {
+        return product.id;
+      });
+
+      let checkoutData = {
+        name: this.customerInfo.name,
+        email: this.customerInfo.email,
+        number: this.customerInfo.number,
+        address: this.customerInfo.address,
+        transaction_total: this.totalPayment,
+        transaction_status: "PENDING",
+        transaction_details: productId,
+      };
+
+      axios
+        .post("https://shayna.test/api/checkout", checkoutData)
+        .then(() => this.$router.push("success"))
+        .catch((err) => console.log(err.response));
+    },
+  },
+
+  mounted() {
+    if (localStorage.getItem("cartUser")) {
+      try {
+        this.cartUser = JSON.parse(localStorage.getItem("cartUser"));
+      } catch (e) {
+        localStorage.removeItem("cartUser");
+      }
+    }
+  },
+  computed: {
+    priceTotal() {
+      return this.cartUser.reduce(function(items, data) {
+        return items + data.price;
+      }, 0);
+    },
+    pajak() {
+      return (this.priceTotal * 10) / 100;
+    },
+    totalPayment() {
+      return this.priceTotal + this.pajak;
+    },
+  },
 };
 </script>
+
+<style scoped>
+.img-cart {
+  width: 100px;
+  height: 100px;
+}
+</style>
