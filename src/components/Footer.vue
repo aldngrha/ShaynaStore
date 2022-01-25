@@ -6,14 +6,12 @@
         <div class="col-lg-5">
           <div class="footer-left text-left">
             <div class="footer-logo">
-              <a href="#"
-                ><img src="img/logo_website_shayna_white.png" alt=""
-              /></a>
+              <a href="#"><img src="img/logo_bening.png" alt=""/></a>
             </div>
             <ul>
-              <li>Address: Setra Duta, Bandung</li>
+              <li>Address: Jl. Gajah Mada, Bandar Lampung</li>
               <li>Phone: +628 22081996</li>
-              <li>Email: hello.shayna@gmail.com</li>
+              <li>Email: beningeyes@gmail.com</li>
             </ul>
             <div class="footer-social">
               <a href="#"><i class="fa fa-facebook"></i></a>
@@ -52,7 +50,8 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="copyright-text">
-              Copyright &copy; {{ currentYear }} All rights reserved | Shayna
+              Copyright &copy; {{ currentYear }} All rights reserved |
+              Beningeyes
             </div>
           </div>
         </div>

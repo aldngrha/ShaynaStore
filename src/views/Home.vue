@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <HeaderShayna />
+    <Header />
     <Hero />
-    <WomenShayna />
+    <Post />
     <Insta />
     <Partner />
     <Footer />
@@ -11,18 +11,18 @@
 
 <script>
 // @ is an alias to /src
-import HeaderShayna from "@/components/HeaderShayna.vue";
+import Header from "@/components/Header.vue";
 import Hero from "@/components/Hero.vue";
-import WomenShayna from "@/components/WomenShayna.vue";
+import Post from "@/components/Post.vue";
 import Insta from "@/components/Insta.vue";
 import Partner from "@/components/Partner.vue";
 import Footer from "@/components/Footer.vue";
 export default {
   name: "home",
   components: {
-    HeaderShayna,
+    Header,
     Hero,
-    WomenShayna,
+    Post,
     Insta,
     Partner,
     Footer,

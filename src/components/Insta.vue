@@ -7,7 +7,7 @@
     >
       <div class="inside-text">
         <i class="ti-instagram"></i>
-        <h5><a href="#">shayna_gallery</a></h5>
+        <h5><a href="https://www.instagram.com/beningeyes/">beningeyes</a></h5>
       </div>
     </div>
     <div
@@ -16,7 +16,7 @@
     >
       <div class="inside-text">
         <i class="ti-instagram"></i>
-        <h5><a href="#">shayna_gallery</a></h5>
+        <h5><a href="https://www.instagram.com/beningeyes/">beningeyes</a></h5>
       </div>
     </div>
     <div
@@ -25,7 +25,7 @@
     >
       <div class="inside-text">
         <i class="ti-instagram"></i>
-        <h5><a href="#">shayna_gallery</a></h5>
+        <h5><a href="https://www.instagram.com/beningeyes/">beningeyes</a></h5>
       </div>
     </div>
     <div
@@ -34,7 +34,7 @@
     >
       <div class="inside-text">
         <i class="ti-instagram"></i>
-        <h5><a href="#">shayna_gallery</a></h5>
+        <h5><a href="https://www.instagram.com/beningeyes/">beningeyes</a></h5>
       </div>
     </div>
     <div
@@ -43,7 +43,7 @@
     >
       <div class="inside-text">
         <i class="ti-instagram"></i>
-        <h5><a href="#">shayna_gallery</a></h5>
+        <h5><a href="https://www.instagram.com/beningeyes/">beningeyes</a></h5>
       </div>
     </div>
     <div
@@ -52,7 +52,7 @@
     >
       <div class="inside-text">
         <i class="ti-instagram"></i>
-        <h5><a href="#">shayna_gallery</a></h5>
+        <h5><a href="https://www.instagram.com/beningeyes/">beningeyes</a></h5>
       </div>
     </div>
   </div>

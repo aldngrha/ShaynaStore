@@ -1,6 +1,6 @@
 <template>
   <div class="shopping">
-    <HeaderShayna />
+    <Header />
     <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section text-left">
       <div class="container">
@@ -131,7 +131,7 @@
                       No. Rekening <span>2208 1996 1403</span>
                     </li>
                     <li class="subtotal mt-3">
-                      Nama Penerima <span>Shayna</span>
+                      Nama Penerima <span>Bening</span>
                     </li>
                   </ul>
                   <a @click="checkout()" href="#" class="proceed-btn"
@@ -149,12 +149,12 @@
 </template>
 
 <script>
-import HeaderShayna from "../components/HeaderShayna.vue";
+import Header from "../components/Header.vue";
 import axios from "axios";
 export default {
   name: "Cart",
   components: {
-    HeaderShayna,
+    Header,
   },
   data() {
     return {
@@ -191,7 +191,7 @@ export default {
       };
 
       axios
-        .post("https://shayna.test/api/checkout", checkoutData)
+        .post("http://server-beningeyes.test/api/checkout", checkoutData)
         .then(() => this.$router.push("success"))
         .catch((err) => console.log(err.response));
     },

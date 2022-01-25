@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <HeaderShayna />
+    <Header />
     <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section text-left">
       <div class="container">
@@ -83,22 +83,19 @@
       </div>
     </section>
     <!-- Product Shop Section End -->
-    <RelatedProducts />
     <Footer />
   </div>
 </template>
 
 <script>
-import HeaderShayna from "../components/HeaderShayna.vue";
-import RelatedProducts from "../components/RealtedProducts.vue";
+import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
 import carousel from "vue-owl-carousel";
 import axios from "axios";
 export default {
   name: "Product",
   components: {
-    HeaderShayna,
-    RelatedProducts,
+    Header,
     Footer,
     carousel,
   },
@@ -143,7 +140,7 @@ export default {
       }
     }
     axios
-      .get("https://shayna.test/api/products", {
+      .get("http://server-beningeyes.test/api/products", {
         params: {
           id: this.$route.params.id,
         },
